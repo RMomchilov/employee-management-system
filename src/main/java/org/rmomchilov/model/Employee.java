@@ -1,15 +1,13 @@
 package org.rmomchilov.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
 import org.rmomchilov.model.enums.DepartmentEnum;
+import jakarta.persistence.*;
 
 @Entity
 public class Employee {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     @Enumerated(EnumType.STRING)
