@@ -18,6 +18,7 @@ import java.math.RoundingMode;
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getCanonicalName());
+    private static final BigDecimal PERFORMANCE_COEFFICIENT = new BigDecimal("0.1");
 
     @Autowired
     private EmployeeRepository employeeRepository;
@@ -25,8 +26,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee getEmployee(Long id) {
         logger.info("Fetching employee with id: {}", id);
-        return employeeRepository.findById(id)
-                .orElse(null);
+        return employeeRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -41,9 +41,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void updateEmployee(Employee employee) {
+    public Employee updateEmployee(Employee employee) {
         logger.info("Updating employee with id: {}", employee.getId());
-        employeeRepository.saveAndFlush(employee);
+        return employeeRepository.saveAndFlush(employee);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Integer calculateBonus(Employee employee) {
         logger.info("Calculating bonuses for employee with id: {}", employee.getId());
         BigDecimal departmentBonus = (new DepartmentBonus()).calculateBonus(employee);
-        BigDecimal performanceBonus = (new PerformanceBonus(new BigDecimal("0.1"))).calculateBonus(employee);
+        BigDecimal performanceBonus = (new PerformanceBonus(PERFORMANCE_COEFFICIENT)).calculateBonus(employee);
         return departmentBonus.add(performanceBonus)
                 .setScale(0, RoundingMode.HALF_UP)
                 .intValue();

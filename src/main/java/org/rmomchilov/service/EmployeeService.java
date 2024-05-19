@@ -6,7 +6,8 @@ public interface EmployeeService {
 
     Employee getEmployee(Long id);
     Long addEmployee(Employee employee);
-    void updateEmployee(Employee employee);
+
+    Employee updateEmployee(Employee employee);
     void removeEmployee(Long id);
     Integer calculateBonus(Employee employee);
 }
